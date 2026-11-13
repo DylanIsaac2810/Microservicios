@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1d4ed8">
+  <meta name="description" content="Billetera digital con microservicios - Practica 8 Sistemas Distribuidos (ESCOM-IPN)">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Billetera - Microservicios</title>
+</head>
+<body>
+  <header class="barra">
+    <h1>Billetera Digital</h1>
+    <span class="barra__sub">Arquitectura de microservicios</span>
+  </header>
+
+  <main>
+    <section aria-labelledby="t-serv">
+      <h2 id="t-serv">Estado de los servicios</h2>
+      <ul class="servicios" id="servicios">
+        <li data-servicio="api-gateway"><span class="punto punto--desconocido"></span><span class="serv__nombre">api-gateway</span><span class="serv__puerto">:8080</span><span class="serv__estado">—</span></li>
+        <li data-servicio="cuenta-service"><span class="punto punto--desconocido"></span><span class="serv__nombre">cuenta-service</span><span class="serv__puerto">:8081</span><span class="serv__estado">—</span></li>
+        <li data-servicio="transaccion-service"><span class="punto punto--desconocido"></span><span class="serv__nombre">transaccion-service</span><span class="serv__puerto">:8082</span><span class="serv__estado">—</span></li>
+      </ul>
+    </section>
+
+    <section class="saldo" aria-labelledby="t-saldo">
+      <label for="cuenta" class="saldo__etiqueta">Cuenta</label>
+      <select id="cuenta">
+        <option value="1">Cuenta 1</option>
+        <option value="2">Cuenta 2</option>
+      </select>
+      <p id="t-saldo" class="saldo__etiqueta">Saldo disponible</p>
+      <p id="saldo" class="saldo__monto">$ —</p>
+      <p class="saldo__nota">Dato de <strong>cuenta-service</strong></p>
+    </section>
+
+    <section aria-labelledby="t-operar">
+      <h2 id="t-operar">Nueva transacción</h2>
+      <form id="form" novalidate>
+        <label for="cantidad">Cantidad (MXN)</label>
+        <input id="cantidad" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00" required>
+        <div class="botones">
+          <button type="submit" data-tipo="DEPOSITO" class="btn btn--dep">Depositar</button>
+          <button type="submit" data-tipo="RETIRO" class="btn btn--ret">Retirar</button>
+        </div>
+      </form>
+      <p class="saldo__nota">La solicitud pasa por el <strong>api-gateway</strong> hacia <strong>transaccion-service</strong>, que consulta a <strong>cuenta-service</strong>.</p>
+    </section>
+
+    <section aria-labelledby="t-hist">
+      <h2 id="t-hist">Historial</h2>
+      <p class="saldo__nota">Dato de <strong>transaccion-service</strong></p>
+      <ul id="lista" class="lista">
+        <li class="vacio">Sin transacciones todavía.</li>
+      </ul>
+    </section>
+
+    <button id="btn-instalar" class="btn btn--sec" hidden>Instalar aplicación</button>
+  </main>
+
+  <div id="toast" class="toast" role="alert" aria-live="assertive" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

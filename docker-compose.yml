@@ -1,0 +1,30 @@
+# Levanta los tres microservicios en una red comun.
+# Dentro de esa red cada servicio se encuentra por su nombre (cuenta-service, etc.).
+services:
+  cuenta-service:
+    build: ./cuenta-service
+    container_name: cuenta-service
+    ports:
+      - "8081:8081"
+
+  transaccion-service:
+    build: ./transaccion-service
+    container_name: transaccion-service
+    environment:
+      CUENTA_URL: http://cuenta-service:8081
+    ports:
+      - "8082:8082"
+    depends_on:
+      - cuenta-service
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    environment:
+      CUENTA_URL: http://cuenta-service:8081
+      TRANSACCION_URL: http://transaccion-service:8082
+    ports:
+      - "8080:8080"
+    depends_on:
+      - cuenta-service
+      - transaccion-service
